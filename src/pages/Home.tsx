@@ -11,31 +11,40 @@ import {
 import {Button} from '../components/Button';
 import {SkillCard} from '../components/SkillCard';
 
+interface SkillData {
+  id: string;
+  name: string;
+}
+
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
-  const [mySkills, setMySkills] = useState([]);
-  const [gretting, setGretting] = useState('');
+  const [mySkills, setMySkills] = useState<SkillData[]>([]);
+  const [greeting, setGreeting] = useState('');
 
   function handleAddNewSkill() {
-    setMySkills(oldState => [...oldState, newSkill]);
+    const data = {
+      id: String(new Date().getTime()),
+      name: newSkill
+    }
+    setMySkills(oldState => [...oldState, data]);
   }
 
   useEffect(() => {
     const currentHour = new Date().getHours();
 
     if (currentHour < 12) {
-      setGretting('Good morning');
+      setGreeting('Good morning');
     } else if (currentHour >= 12 && currentHour < 18) {
-      setGretting('Good afternoon');
+      setGreeting('Good afternoon');
     } else {
-      setGretting('Good night');
+      setGreeting('Good night');
     }
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Welcome, Fábio</Text>
-      <Text style={styles.greetings}>{gretting}</Text>
+      <Text style={styles.greetings}>{greeting}</Text>
       <TextInput
         placeholder="New skill"
         placeholderTextColor="#555"
@@ -43,14 +52,14 @@ export function Home() {
         onChangeText={setNewSkill}
       />
 
-      <Button onPress={handleAddNewSkill} />
+      <Button title="Add" onPress={handleAddNewSkill} />
 
       <Text style={[styles.title, {marginVertical: 50}]}>My Skills</Text>
 
       <FlatList
         data={mySkills}
-        keyExtractor={item => item}
-        renderItem={({item}) => <SkillCard skill={item} />}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => <SkillCard skill={item.name} />}
       />
     </SafeAreaView>
   );
