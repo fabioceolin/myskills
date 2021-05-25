@@ -1,5 +1,10 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet, TouchableOpacityProps} from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  TouchableOpacityProps,
+} from 'react-native';
 
 interface SkillCardProps extends TouchableOpacityProps {
   skill: string;
